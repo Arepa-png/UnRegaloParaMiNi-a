@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Day ❤️</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden}
+body{
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+  background:#020007;
+  color:#fff;
+}
+.dream-bg{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 78% 20%, rgba(255,35,150,.34) 0 5%, transparent 23%),
+    radial-gradient(circle at 18% 23%, rgba(115,60,255,.30) 0 7%, transparent 25%),
+    radial-gradient(circle at 50% 47%, rgba(255,20,135,.16), transparent 34%),
+    linear-gradient(180deg,#02000b 0%,#09001b 42%,#17002d 66%,#05000c 100%);
+}
+.dream-bg:before{
+  content:"";
+  position:absolute;
+  width:240px;height:240px;
+  left:10%;top:8%;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 36% 34%,#ffd2ec 0 2%,transparent 3%),
+    radial-gradient(circle at 60% 63%,rgba(255,180,225,.75) 0 4%,transparent 5%),
+    radial-gradient(circle,#ffb0dc 0 8%,#8e5baf 38%,#251337 70%,#09000f 100%);
+  box-shadow:0 0 45px rgba(255,120,210,.38),0 0 120px rgba(130,65,255,.20);
+  opacity:.72;
+}
+.dream-bg:after{
+  content:"";
+  position:absolute;
+  left:-8%;right:-8%;bottom:-7%;
+  height:48%;
+  background:
+    linear-gradient(155deg,transparent 0 31%,rgba(12,4,25,.98) 32% 43%,transparent 44%),
+    linear-gradient(25deg,transparent 0 35%,rgba(18,4,32,.98) 36% 48%,transparent 49%),
+    radial-gradient(ellipse at 50% 15%,rgba(255,130,205,.45),transparent 45%),
+    linear-gradient(180deg,rgba(255,75,180,.12),rgba(2,0,9,.96));
+  filter:drop-shadow(0 -10px 25px rgba(255,45,150,.22));
+}
+canvas{position:fixed;inset:0;width:100%;height:100%;z-index:1}
+body:after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:1;
+  background:radial-gradient(circle at 50% 45%,transparent 0%,rgba(0,0,0,.05) 35%,rgba(0,0,0,.5) 100%);
+}
+button{font:inherit}
+.ui{position:fixed;z-index:10}
+.top-card{
+  top:18px;left:18px;padding:12px 18px;border:1px solid rgba(255,120,180,.35);
+  border-radius:16px;background:rgba(12,3,20,.52);backdrop-filter:blur(14px);
+  box-shadow:0 0 30px rgba(255,30,130,.12)
+}
+.top-card b{display:block;font-size:14px}
+.top-card span{font-size:11px;color:#dcb6ca}
+.music{
+  top:18px;right:18px;display:flex;align-items:center;gap:12px;padding:10px 13px;
+  border:1px solid rgba(255,120,180,.35);border-radius:16px;
+  background:rgba(12,3,20,.52);backdrop-filter:blur(14px)
+}
+.music button,.nav button,.main-btn,.close-btn{
+  border:0;color:white;cursor:pointer
+}
+.music button{background:rgba(255,70,140,.18);border-radius:10px;padding:8px 12px}
+.nav{
+  left:18px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:9px
+}
+.nav button{
+  width:170px;text-align:left;padding:11px 14px;border-radius:14px;
+  background:rgba(12,3,20,.5);border:1px solid rgba(255,120,180,.25);
+  backdrop-filter:blur(14px);transition:.25s
+}
+.nav button:hover,.nav button.active{transform:translateX(6px);background:rgba(255,50,130,.18);border-color:rgba(255,130,190,.55)}
+.nav strong{display:block;font-size:13px}.nav small{color:#cdaabd;font-size:10px}
+.center{
+  position:fixed;z-index:5;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:min(760px,86vw);text-align:center;pointer-events:none
+}
+.eyebrow{font-size:12px;letter-spacing:7px;color:#ffc3dc;margin-bottom:10px}
+.name{
+  font-family:Georgia,serif;font-size:clamp(62px,12vw,125px);font-style:italic;
+  text-shadow:0 0 12px #fff,0 0 30px #ff4d9a,0 0 70px #ff176e;
+}
+.tagline{font-size:clamp(16px,2.3vw,24px);margin:8px auto;color:#ffeaf3;max-width:600px;line-height:1.45}
+.main-btn{
+  pointer-events:auto;margin-top:28px;padding:15px 30px;border-radius:999px;
+  background:linear-gradient(90deg,#ff397e,#ff6ba3);font-weight:700;
+  box-shadow:0 0 25px rgba(255,45,125,.55),inset 0 1px rgba(255,255,255,.45);
+  transition:.25s
+}
+.main-btn:hover{transform:scale(1.06);box-shadow:0 0 40px rgba(255,45,125,.8)}
+.bottom{bottom:18px;left:50%;transform:translateX(-50%);text-align:center;color:#c9aaba;font-size:11px}
+.bottom b{display:block;color:#ffe4ee;font-size:14px;margin-bottom:3px}
+.panel{
+  position:fixed;z-index:20;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:min(760px,90vw);max-height:82vh;overflow:auto;padding:32px;
+  background:rgba(13,3,19,.86);border:1px solid rgba(255,130,190,.4);
+  border-radius:26px;backdrop-filter:blur(20px);box-shadow:0 0 70px rgba(255,20,120,.25);
+  display:none
+}
+.panel.show{display:block;animation:appear .5s ease}
+@keyframes nebulaDrift{
+  0%,100%{transform:scale(1) translate3d(0,0,0)}
+  50%{transform:scale(1.06) translate3d(1.5%, -1%, 0)}
+}
+.dream-bg{animation:nebulaDrift 14s ease-in-out infinite;z-index:0}
+@keyframes appear{from{opacity:0;transform:translate(-50%,-47%) scale(.97)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+.panel h2{font-family:Georgia,serif;font-size:42px;color:#ffb7d2;margin-bottom:14px}
+.panel p{color:#f7dfe9;line-height:1.8;font-size:16px;white-space:pre-line}
+.close-btn{float:right;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:50%;width:34px;height:34px}
+.reasons{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:20px}
+.reason{padding:18px;border-radius:16px;background:rgba(255,70,140,.08);border:1px solid rgba(255,130,190,.2)}
+.reason b{display:block;color:#ffb3ce;margin-bottom:9px;font-family:Georgia,serif;font-size:20px}
+.reason span{display:block;line-height:1.65;color:#f7dfe9}
+#panelDetalles .reasons{grid-template-columns:repeat(2,1fr)}
+@media(max-width:650px){
+  #panelDetalles .reasons{grid-template-columns:1fr}
+}
+.photos{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:20px}
+/* GALERÍA ROMÁNTICA */
+.gallery-title{
+  text-align:center;
+  font-family:Georgia,serif;
+  font-size:clamp(36px,6vw,64px);
+  font-style:italic;
+  color:#ffd0e2;
+  text-shadow:0 0 12px #ff5b9e,0 0 35px rgba(255,35,125,.55);
+  margin:5px 0 4px;
+}
+.gallery-subtitle{
+  text-align:center;
+  color:#f4dce8;
+  line-height:1.5;
+  margin-bottom:22px;
+}
+.photo-stage{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+}
+.photo-card{
+  width:min(100%,760px);
+  height:min(52vh,430px);
+  border-radius:22px;
+  padding:5px;
+  background:linear-gradient(135deg,#ff75ad,#ffd0e5,#9e74ff,#ff4d99);
+  box-shadow:0 0 25px rgba(255,80,160,.42),0 0 65px rgba(125,70,255,.18);
+  position:relative;
+  overflow:hidden;
+}
+.photo-card img{
+  width:100%;height:100%;display:block;object-fit:cover;border-radius:18px;
+}
+.gallery-arrow{
+  flex:0 0 auto;
+  width:48px;height:48px;border-radius:50%;
+  border:1px solid rgba(255,190,220,.7);
+  background:rgba(255,50,140,.10);
+  color:#fff;font-size:25px;cursor:pointer;
+  box-shadow:0 0 18px rgba(255,70,150,.25);
+}
+.gallery-arrow:hover{background:rgba(255,70,150,.28);transform:scale(1.08)}
+.dots{text-align:center;margin:13px 0 15px}
+.dot{
+  display:inline-block;width:9px;height:9px;border-radius:50%;
+  margin:0 5px;background:#856b82;transition:.25s;
+}
+.dot.active{background:#ff86b9;box-shadow:0 0 12px #ff5d9f;transform:scale(1.3)}
+.gallery-quote{
+  text-align:center;
+  padding:17px 12px;
+  margin:0 auto;
+  border-top:1px solid rgba(255,150,200,.35);
+  border-bottom:1px solid rgba(255,150,200,.35);
+  color:#ffd2e2;
+  font-family:Georgia,serif;
+  font-size:clamp(20px,3vw,30px);
+  font-style:italic;
+  text-shadow:0 0 14px rgba(255,80,150,.65);
+}
+/* 💗 SORPRESA FINAL */
+.sorpresa-text{
+  text-align:center;
+  color:#ffe6ef;
+  font-size:clamp(18px,2.7vw,25px);
+  line-height:1.75;
+  margin:28px auto 12px;
+  max-width:650px;
+  text-shadow:0 0 12px rgba(255,90,160,.18);
+}
+.big-heart{
+  width:150px;
+  height:150px;
+  margin:25px auto;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  animation:heartFloat 2.4s ease-in-out infinite;
+  filter:drop-shadow(0 0 18px #ff4d98) drop-shadow(0 0 45px rgba(255,25,110,.65));
+}
+.big-heart:before,
+.big-heart:after{
+  content:"";
+  position:absolute;
+  width:75px;
+  height:120px;
+  border-radius:75px 75px 0 0;
+  background:linear-gradient(180deg,#ffb5d3,#ff397f 55%,#b9004f);
+}
+.big-heart:before{
+  transform:rotate(-45deg);
+  left:38px;
+  top:13px;
+  transform-origin:0 100%;
+}
+.big-heart:after{
+  transform:rotate(45deg);
+  right:38px;
+  top:13px;
+  transform-origin:100% 100%;
+}
+.big-heart span{
+  position:relative;
+  z-index:2;
+  color:#fff;
+  font-size:70px;
+  text-shadow:0 0 10px #fff,0 0 25px #ff8db9;
+  animation:heartGlow 1.2s ease-in-out infinite;
+}
+@keyframes heartFloat{
+  0%,100%{transform:translateY(0) scale(1)}
+  50%{transform:translateY(-8px) scale(1.06)}
+}
+@keyframes heartGlow{
+  0%,100%{opacity:.8;transform:scale(.96)}
+  50%{opacity:1;transform:scale(1.08)}
+}
+.sorpresa-final{
+  text-align:center;
+  color:#ffbad5;
+  font-family:Georgia,serif;
+  font-size:24px;
+  font-style:italic;
+  text-shadow:0 0 15px rgba(255,80,150,.6);
+}
+.sorpresa-final small{
+  display:block;
+  margin-top:10px;
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+  font-style:normal;
+  font-size:13px;
+  color:#cdaabc;
+}
+.gallery-note{
+  text-align:center;
+  color:#cdaabc;
+  font-size:12px;
+  margin-top:12px;
+}
+@media(max-width:650px){
+  .photo-stage{gap:7px}
+  .gallery-arrow{width:38px;height:38px;font-size:19px}
+  .photo-card{height:48vh}
+}
+.hidden{display:none!important}
+@media(max-width:800px){
+ .nav{display:none}.top-card{left:10px;top:10px}.music{right:10px;top:10px}
+ .center{width:94vw}.eyebrow{letter-spacing:4px}.reasons,.photos{grid-template-columns:1fr}
+ .panel{padding:22px}.panel h2{font-size:32px}
+}
+
+.romantic-scene{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.moon{
+  position:absolute;left:9%;top:7%;width:190px;height:190px;border-radius:50%;
+  background:
+    radial-gradient(circle at 30% 28%,rgba(255,255,255,.9) 0 2%,transparent 3%),
+    radial-gradient(circle at 63% 65%,rgba(255,170,220,.35) 0 8%,transparent 9%),
+    radial-gradient(circle at 50% 45%,#ffd2ed 0 12%,#e989c8 38%,#7653a6 68%,#241238 100%);
+  box-shadow:0 0 45px rgba(255,145,220,.45),0 0 120px rgba(155,70,255,.22);
+  opacity:.78;
+}
+.lake-glow{
+  position:absolute;left:20%;right:15%;bottom:4%;height:28%;
+  background:radial-gradient(ellipse at center top,rgba(255,80,190,.52),rgba(104,50,210,.12) 38%,transparent 72%);
+  filter:blur(8px);
+}
+.mountain{
+  position:absolute;bottom:2%;width:55%;height:25%;
+  background:linear-gradient(145deg,transparent 0 15%,rgba(10,3,24,.97) 16% 30%,transparent 31% 40%,rgba(7,2,18,.98) 41% 100%);
+  filter:drop-shadow(0 -4px 15px rgba(255,65,180,.25));
+}
+.mountain-left{left:-7%;transform:skewX(-8deg) rotate(2deg)}
+.mountain-right{right:-8%;transform:scaleX(-1) skewX(-8deg) rotate(2deg)}
+.blossoms{
+  position:absolute;top:-8px;color:#ff78b9;font-size:38px;letter-spacing:8px;
+  text-shadow:0 0 12px #ff3f9d,0 0 28px rgba(255,50,150,.6);
+  opacity:.8;white-space:nowrap;
+}
+.blossoms-left{left:-20px;transform:rotate(-8deg)}
+.blossoms-right{right:-20px;transform:rotate(8deg)}
+
+</style>
+</head>
+
+<body>
+
+<div class="dream-bg">
+  <div class="romantic-scene">
+    <div class="moon"></div>
+    <div class="lake-glow"></div>
+    <div class="mountain mountain-left"></div>
+    <div class="mountain mountain-right"></div>
+    <div class="blossoms blossoms-left">✿ ✿ ❀ ✿</div>
+    <div class="blossoms blossoms-right">✿ ❀ ✿ ✿</div>
+  </div>
+</div>
+<canvas id="space"></canvas>
+
+<!-- =========================================================
+     ✨ ZONA FÁCIL DE EDITAR ✨
+     CAMBIA SOLO LO QUE ESTÁ ENTRE COMILLAS.
+     ========================================================= -->
+
+<script>
+const REGALO = {
+
+  // 👩 Nombre de tu pareja
+  nombre: "Day",
+
+  // 💖 Texto principal de la portada
+  titulo: "Feliz Día de la Novia",
+
+  // ✨ Frase debajo del nombre
+  frase: "Gracias por hacer mi universo mucho más bonito.",
+
+  // 💌 Título de la carta
+  tituloCarta: "Para Day, con todo mi cariño ❤️",
+
+  // 📝 AQUÍ ESCRIBES TU MENSAJE.
+  // Puedes escribir todo lo que quieras.
+  carta: `Mi niña,
+
+
+Hoy te quiero hacer algo diferente para demostrarte que te amo muchísimo. No simplemente darte un feliz día, sino crear este pequeño universo para hacerte ver cuánto te amo y cuánto me importas de verdad.
+
+También quiero darte las gracias por cada pequeño momento a tu lado, cada llamada con miles de sonrisas, cada conversación hasta tarde.
+
+Puede que muchas veces te haga sentir que no te amo, pero en serio te lo quiero demostrar, y qué mejor que con este pequeño regalo para demostrártelo.
+
+Si algún día dudas de que no te amo, vuelve a este pequeño universo y mirarás que no es así.
+
+Feliz día, mi princesa. ❤️
+
+Te ama mucho,
+un chico un poco loco ❤️`,
+
+  // ⭐ Puedes cambiar estas razones por las que quieras.
+  razones: [
+    ["Tu sonrisa", "Me llena de calidez, es tan linda y me alegra tanto mi día. Cuando me sonríes de timidez, simplemente haces que todo se sienta más bonito."],
+
+    ["Tus ojitos", "Tus hermosos ojos tienen un universo entero. Más hermosos que miles de atardeceres. El color de tus ojos es mi favorito."],
+
+    ["Tu forma de ser", "Me encanta lo creativa y alegre que eres, además de cómo eres tan auténtica. Y amo esos pequeños momentos de esquizofrenia e hiperactividad que te hacen ser tú."],
+
+    ["Nuestros momentos", "Tantos lindos recuerdos, tantas lindas sonrisas y nuestras primeras veces. Son momentos que guardo con muchísimo cariño."],
+
+    ["Tus detalles", "Tus cartas, dibujos, canciones... Dios, no sabes cuánto las valoro. Cada pequeño detalle tuyo significa muchísimo para mí."],
+
+    ["Porque eres tú", "No necesito razones complicadas para amarte tal y como eres. También para decirte lo importante que eres para mí y poder demostrártelo."]
+  ],
+
+  // 📸 Nombres de fotos que pongas junto al index.html.
+  // Si todavía no quieres fotos, déjalo vacío: []
+  fotos: [
+    "day1.jpg",
+    "day2.jpg",
+    "day3.jpg"
+  ],
+
+  // 🎵 Archivo de música colocado junto a index.html.
+  cancion: "cancion.mp3"
+};
+</script>
+
+
+<!-- UI SUPERIOR -->
+<div class="ui top-card">
+  <b>❤️ Día de la Novia</b>
+  <span>Para una persona muy especial</span>
+</div>
+
+<div class="ui music">
+  <span>🎵</span>
+  <span id="musicText">Nuestra canción</span>
+  <button id="musicBtn">▶</button>
+</div>
+
+
+<!-- MENÚ -->
+<div class="ui nav">
+  <button class="active" onclick="cerrarPanel()">
+    <strong>⌂ Inicio</strong><small>Nuestro universo</small>
+  </button>
+
+  <button onclick="abrirCarta()">
+    <strong>♡ Carta</strong><small>Para mi princesa</small>
+  </button>
+
+  <button onclick="abrirFotos()">
+    <strong>▣ Fotos</strong><small>Mi niña hermosa</small>
+  </button>
+
+  <button onclick="abrirDetalles()">
+    <strong>♡ Lo que más amo de ti</strong><small>Todo lo que amo de ti</small>
+  </button>
+
+  <button onclick="abrirSorpresa()">
+    <strong>✈ Sorpresa</strong><small>Un último detalle</small>
+  </button>
+</div>
+
+
+<!-- CENTRO -->
+<div class="center">
+  <div class="eyebrow" id="titulo"></div>
+  <div class="name" id="nombre"></div>
+  <div class="tagline" id="frase"></div>
+  <button class="main-btn" onclick="abrirCarta()">♡ Abrir mi regalo →</button>
+</div>
+
+<div class="ui bottom">
+  <b>♡</b>
+  Mueve el mouse para explorar nuestro universo
+</div>
+
+
+<!-- PANEL CARTA -->
+<div id="panelCarta" class="panel">
+  <button class="close-btn" onclick="cerrarPanel()">×</button>
+  <h2 id="tituloCarta"></h2>
+  <p id="textoCarta"></p>
+</div>
+
+
+<!-- PANEL FOTOS -->
+<div id="panelFotos" class="panel">
+  <button class="close-btn" onclick="cerrarPanel()">×</button>
+  <div class="gallery-title">Nuestras Fotos ♡</div>
+  <div class="gallery-subtitle">
+    Pequeños momentos, grandes recuerdos.<br>
+    Cada foto es una parte de este universo que solo existe contigo.
+  </div>
+
+  <div class="photo-stage">
+    <button class="gallery-arrow" onclick="fotoAnterior()">‹</button>
+    <div class="photo-card">
+      <img id="fotoActual" src="day1.jpg" alt="Recuerdo de Day">
+    </div>
+    <button class="gallery-arrow" onclick="fotoSiguiente()">›</button>
+  </div>
+
+  <div class="dots" id="fotoDots"></div>
+
+  <div class="gallery-quote">
+    Eres lo más hermoso que tengo en mi vida ❤️
+  </div>
+
+  <div class="gallery-note">
+    Un pedacito de nuestro universo, guardado para ti ✨
+  </div>
+</div>
+
+
+<!-- PANEL DETALLES DE TI -->
+<div id="panelDetalles" class="panel">
+  <button class="close-btn" onclick="cerrarPanel()">×</button>
+
+  <div class="gallery-title">Lo que más amo de ti ♡</div>
+  <div class="gallery-subtitle">
+    Hay tantas cosas que amo de ti que sería imposible escribirlas todas.
+  </div>
+
+  <div class="reasons" id="detalles"></div>
+</div>
+
+
+<!-- PANEL SORPRESA -->
+<div id="panelSorpresa" class="panel">
+  <button class="close-btn" onclick="cerrarPanel()">×</button>
+
+  <div class="gallery-title">Una última sorpresa... 💗</div>
+
+  <div class="gallery-subtitle">
+    Llegaste hasta el final de este pequeño universo que hice para ti.
+  </div>
+
+  <div class="sorpresa-text">
+    Gracias por ver toda esta carta que te hice.<br><br>
+
+    Espero poder ir el otro año a verte y abrazarte.<br>
+    Me esforzaré para estar contigo. ❤️
+  </div>
+
+  <div class="big-heart" aria-label="Corazón">
+    <span>♥</span>
+  </div>
+
+  <div class="sorpresa-final">
+    <span>TE AMO MUCHÍSIMO, DAY</span>
+    <small>Con todo mi cariño, Camilo ❤️</small>
+  </div>
+</div>
+
+
+<script>
+// =========================================================
+// CARGAR LOS TEXTOS PERSONALIZADOS
+// =========================================================
+document.getElementById("titulo").textContent=REGALO.titulo;
+document.getElementById("nombre").textContent=REGALO.nombre+" ❤️";
+document.getElementById("frase").textContent=REGALO.frase;
+document.getElementById("tituloCarta").textContent=REGALO.tituloCarta;
+document.getElementById("textoCarta").textContent=REGALO.carta;
+
+const detalles=document.getElementById("detalles");
+
+REGALO.razones.forEach(r=>{
+  const detail=document.createElement("div");
+  detail.className="reason";
+  detail.innerHTML=`<b>♡ ${r[0]}</b><span>${r[1]}</span>`;
+  detalles.appendChild(detail);
+});
+
+let fotoIndex = 0;
+const fotoActual = document.getElementById("fotoActual");
+const fotoDots = document.getElementById("fotoDots");
+
+function renderFotos(){
+  fotoActual.src = REGALO.fotos[fotoIndex];
+  fotoActual.alt = `Recuerdo de ${REGALO.nombre}`;
+  fotoDots.innerHTML = "";
+
+  REGALO.fotos.forEach((_, i)=>{
+    const dot = document.createElement("span");
+    dot.className = "dot" + (i === fotoIndex ? " active" : "");
+    dot.onclick = () => {
+      fotoIndex = i;
+      renderFotos();
+    };
+    fotoDots.appendChild(dot);
+  });
+}
+
+function fotoAnterior(){
+  fotoIndex = (fotoIndex - 1 + REGALO.fotos.length) % REGALO.fotos.length;
+  renderFotos();
+}
+
+function fotoSiguiente(){
+  fotoIndex = (fotoIndex + 1) % REGALO.fotos.length;
+  renderFotos();
+}
+
+renderFotos();
+
+
+// =========================================================
+// PANELES
+// =========================================================
+function cerrarPanel(){
+  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("show"));
+}
+function abrirCarta(){cerrarPanel();document.getElementById("panelCarta").classList.add("show")}
+function abrirFotos(){cerrarPanel();document.getElementById("panelFotos").classList.add("show")}
+function abrirDetalles(){cerrarPanel();document.getElementById("panelDetalles").classList.add("show")}
+function abrirSorpresa(){cerrarPanel();document.getElementById("panelSorpresa").classList.add("show")}
+
+
+// =========================================================
+// GALAXIA / ESPACIO
+// =========================================================
+const canvas=document.getElementById("space");
+const ctx=canvas.getContext("2d");
+let W,H,DPR;
+let mx=0,my=0;
+
+function resize(){
+  DPR=Math.min(devicePixelRatio||1,2);
+  W=innerWidth;H=innerHeight;
+  canvas.width=W*DPR;canvas.height=H*DPR;
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+}
+addEventListener("resize",resize);
+resize();
+
+addEventListener("mousemove",e=>{
+  mx=e.clientX/W-.5;
+  my=e.clientY/H-.5;
+});
+
+const stars=[];
+const heart=[];
+const orbitParticles=[];
+const shooting=[];
+
+function heartPoint(t){
+  return {
+    x:16*Math.pow(Math.sin(t),3),
+    y:13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t)
+  };
+}
+
+// ⭐ estrellas
+for(let i=0;i<1800;i++){
+  stars.push({
+    x:Math.random(),y:Math.random(),z:Math.random(),
+    r:Math.random()*1.5+.15,
+    phase:Math.random()*Math.PI*2
+  });
+}
+
+// ❤️ partículas del corazón
+for(let i=0;i<5000;i++){
+  const t=Math.random()*Math.PI*2;
+  const p=heartPoint(t);
+  const fill=Math.pow(Math.random(),2)*1.15;
+
+  heart.push({
+    x:p.x+(Math.random()-.5)*fill,
+    y:p.y+(Math.random()-.5)*fill,
+    z:(Math.random()-.5)*3.8,
+    size:Math.random()*1.5+.25,
+    phase:Math.random()*Math.PI*2
+  });
+}
+
+// 🪐 partículas orbitales
+for(let i=0;i<500;i++){
+  orbitParticles.push({
+    a:Math.random()*Math.PI*2,
+    r:Math.random()*260+90,
+    speed:(Math.random()*.0015+.0005)*(Math.random()>.5?1:-1),
+    y:(Math.random()-.5)*100,
+    size:Math.random()*1.5+.3
+  });
+}
+
+function galaxyBackground(time){
+  // nebulosa radial
+  const g=ctx.createRadialGradient(W*.52,H*.48,20,W*.52,H*.48,Math.max(W,H)*.75);
+  g.addColorStop(0,"rgba(70,10,80,.18)");
+  g.addColorStop(.35,"rgba(25,5,55,.13)");
+  g.addColorStop(1,"rgba(0,0,0,0)");
+  ctx.fillStyle=g;
+  ctx.fillRect(0,0,W,H);
+
+  // 🌌 bandas de galaxia
+  ctx.save();
+  ctx.translate(W/2,H/2);
+  ctx.rotate(-.28+mx*.08);
+  ctx.globalCompositeOperation="screen";
+
+  for(let arm=0;arm<3;arm++){
+    ctx.beginPath();
+    for(let i=0;i<800;i++){
+      const t=i/800*Math.PI*5+time*.00004;
+      const radius=i/800*Math.max(W,H)*.65;
+      const angle=t+arm*Math.PI*2/3;
+      const x=Math.cos(angle)*radius;
+      const y=Math.sin(angle)*radius*.32;
+      if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle="rgba(150,70,220,.055)";
+    ctx.lineWidth=80;
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawStars(time){
+  for(const s of stars){
+    const x=s.x*W + mx*s.z*35;
+    const y=s.y*H + my*s.z*25;
+    const twinkle=.35+.65*(.5+.5*Math.sin(time*.002+s.phase));
+    ctx.globalAlpha=twinkle;
+    ctx.fillStyle=s.z>.65?"#fff":"#caa9ff";
+    ctx.beginPath();
+    ctx.arc(x,y,s.r*(.5+s.z),0,Math.PI*2);
+    ctx.fill();
+  }
+}
+
+function drawOrbits(time){
+  ctx.save();
+  ctx.translate(W/2+mx*20,H/2+my*12);
+
+  for(const p of orbitParticles){
+    p.a+=p.speed*16;
+    const x=Math.cos(p.a)*p.r;
+    const y=Math.sin(p.a)*p.r*.32;
+    ctx.globalAlpha=.45;
+    ctx.fillStyle=Math.random()>.15?"#ff8fca":"#ffffff";
+    ctx.beginPath();
+    ctx.arc(x,y+p.y*.2,p.size,0,Math.PI*2);
+    ctx.fill();
+  }
+
+  // anillos
+  for(let i=0;i<3;i++){
+    ctx.globalAlpha=.14;
+    ctx.strokeStyle=i===1?"#ff65ac":"#9f7cff";
+    ctx.lineWidth=1;
+    ctx.beginPath();
+    ctx.ellipse(0,0,190+i*55,58+i*18,-.1,0,Math.PI*2);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawHeart(time){
+  const scale=Math.min(W,H)/29;
+  const beat=1+Math.sin(time*.0032)*.045;
+  const cx=W/2+mx*25;
+  const cy=H/2+my*18;
+
+  // aura
+  const aura=ctx.createRadialGradient(cx,cy,10,cx,cy,Math.min(W,H)*.34);
+  aura.addColorStop(0,"rgba(255,30,120,.16)");
+  aura.addColorStop(.4,"rgba(255,30,120,.045)");
+  aura.addColorStop(1,"rgba(0,0,0,0)");
+  ctx.globalAlpha=1;
+  ctx.fillStyle=aura;
+  ctx.fillRect(0,0,W,H);
+
+  for(const p of heart){
+    const x=cx+p.x*scale/16*beat+p.z*mx*9+Math.sin(time*.002+p.phase)*1.2;
+    const y=cy-p.y*scale/16*beat+p.z*my*6+Math.cos(time*.0015+p.phase)*1.2;
+    const glow=.35+.65*(.5+.5*Math.sin(time*.004+p.phase));
+
+    ctx.globalAlpha=.25+.65*glow;
+    ctx.fillStyle=Math.random()>.035?"#ff4f98":"#fff5fa";
+    ctx.beginPath();
+    ctx.arc(x,y,p.size,0,Math.PI*2);
+    ctx.fill();
+  }
+}
+
+function shootingStar(){
+  shooting.push({
+    x:Math.random()*W,y:Math.random()*H*.55,
+    vx:7+Math.random()*8,vy:3+Math.random()*5,
+    life:0,max:35+Math.random()*30
+  });
+}
+
+function drawShooting(){
+  if(Math.random()<.008)shootingStar();
+  for(let i=shooting.length-1;i>=0;i--){
+    const s=shooting[i];
+    s.x+=s.vx;s.y+=s.vy;s.life++;
+    ctx.globalAlpha=1-s.life/s.max;
+    ctx.strokeStyle="#fff";
+    ctx.lineWidth=1.5;
+    ctx.beginPath();
+    ctx.moveTo(s.x,s.y);
+    ctx.lineTo(s.x-s.vx*5,s.y-s.vy*5);
+    ctx.stroke();
+    if(s.life>s.max)shooting.splice(i,1);
+  }
+}
+
+function animate(time){
+  ctx.clearRect(0,0,W,H);
+
+  ctx.fillStyle="#020007";
+  ctx.fillRect(0,0,W,H);
+
+  galaxyBackground(time);
+  drawStars(time);
+  drawOrbits(time);
+  drawHeart(time);
+  drawShooting();
+
+  requestAnimationFrame(animate);
+}
+requestAnimationFrame(animate);
+
+
+// =========================================================
+// 🎵 MÚSICA LOCAL
+// =========================================================
+// Usa el archivo cancion.mp3 que está junto a index.html.
+// El navegador requiere que la persona pulse el botón para iniciar audio.
+const audio = new Audio(REGALO.cancion);
+audio.loop = true;
+audio.volume = 0.35;
+let playing = false;
+
+document.getElementById("musicBtn").onclick = async () => {
+  if (!playing) {
+    try {
+      await audio.play();
+      playing = true;
+      document.getElementById("musicBtn").textContent = "❚❚";
+      document.getElementById("musicText").textContent = "Reproduciendo";
+    } catch (error) {
+      alert("No se pudo reproducir la canción. Verifica que cancion.mp3 esté junto a index.html.");
+    }
+  } else {
+    audio.pause();
+    playing = false;
+    document.getElementById("musicBtn").textContent = "▶";
+    document.getElementById("musicText").textContent = "Nuestra canción";
+  }
+};
+</script>
+
+</body>
+</html>
